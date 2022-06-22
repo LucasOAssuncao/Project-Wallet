@@ -1,4 +1,4 @@
-import SUBMIT_PERSONAL_FORM from '../actions';
+import { SUBMIT_PERSONAL_FORM } from '../actions/actionTypes';
 
 const initialState = {
   wallet: {
@@ -9,7 +9,7 @@ const initialState = {
   },
 };
 
-const formWalletReducer = (state = initialState, action) => {
+const wallet = (state = initialState, action) => {
   switch (action.type) {
   case SUBMIT_PERSONAL_FORM:
     return {
@@ -23,4 +23,4 @@ const formWalletReducer = (state = initialState, action) => {
   }
 };
 
-export default formWalletReducer;
+export default wallet;

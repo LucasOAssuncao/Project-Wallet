@@ -1,23 +1,19 @@
-import SUBMIT_PERSONAL_FORM from '../actions';
+import { SUBMIT_PERSONAL_FORM } from '../actions/actionTypes';
 
 const initialState = {
-  user: {
-    email: '', // string que armazena o email da pessoa usuária
-  },
+  email: '',
 };
 
-const formUserReducer = (state = initialState, action) => {
+const user = (state = initialState, action) => {
   switch (action.type) {
   case SUBMIT_PERSONAL_FORM:
     return {
       ...state,
-      user: {
-        ...action.payload,
-      },
+      email: action.payload.email,
     };
   default:
     return state;
   }
 };
 
-export default formUserReducer;
+export default user;
