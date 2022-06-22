@@ -20,8 +20,8 @@ const requestAPI = (currency) => ({ type: REQUEST_API, payload: currency });
 function fetchAPI() {
   return async (dispatch) => {
     const response = await fetch('https://economia.awesomeapi.com.br/json/all');
-    const data = Object.keys(await response.json()).filter((e) => e !== 'USDT');
-    dispatch(saveCurrency(data));
+    const data = await response.json();
+    dispatch(saveCurrency(Object.keys(data).filter((e) => e !== 'USDT')));
   };
 }
 
