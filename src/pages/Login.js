@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { savePersonalForm } from '../actions';
+import { savePersonalForm, fetchAPI } from '../actions';
 
 class Login extends React.Component {
   state = {
@@ -30,6 +30,7 @@ class Login extends React.Component {
       email,
     };
     dispatchUser(profile);
+    fetchAPI();
     history.push('/carteira');
   }
 
