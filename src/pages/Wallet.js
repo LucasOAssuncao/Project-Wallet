@@ -10,15 +10,43 @@ class Wallet extends React.Component {
   }
 
   render() {
-    const { log } = this.props;
+    const { log, currencies } = this.props;
 
     return (
       <div>
         <header>
-          <h3 data-testid="email-field">{ log }</h3>
+          <h3 data-testid="email-field">{log}</h3>
           <h3 data-testid="total-field">0</h3>
           <h3 data-testid="header-currency-field">BRL</h3>
         </header>
+        <form>
+          <input data-testid="value-input" placeholder="despesa" type="text" />
+          <input
+            data-testid="description-input"
+            placeholder="descrição"
+            type="text"
+          />
+          <label htmlFor="moeda">
+            Moeda
+            <select
+              id="moeda"
+            >
+              {currencies.map((e, index) => (<option key={ index }>{e}</option>))}
+            </select>
+          </label>
+          <select data-testid="method-input">
+            <option>Dinheiro</option>
+            <option>Cartão de crédito</option>
+            <option>Cartão de débito</option>
+          </select>
+          <select data-testid="tag-input">
+            <option>Alimentação</option>
+            <option>Lazer</option>
+            <option>Trabalho</option>
+            <option>Transporte</option>
+            <option>Saúde</option>
+          </select>
+        </form>
       </div>
     );
   }
@@ -27,11 +55,12 @@ class Wallet extends React.Component {
 Wallet.propTypes = {
   log: PropTypes.string.isRequired,
   currency: PropTypes.func.isRequired,
+  currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 const mapStateToProps = (state) => ({
   log: state.user.email,
-  // currencies: state.wallet.currencies,
+  currencies: state.wallet.currencies,
 });
 
 const mapDispatchToProps = (dispatch) => ({
