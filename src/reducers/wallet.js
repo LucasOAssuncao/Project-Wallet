@@ -2,9 +2,8 @@ import {
   SUBMIT_WALLET_FORM,
   REQUEST_API,
   SUBMIT_EXPENCES,
-  SUBMIT_EXCHANGES,
   RAISE_ID,
-  REDUCE_ID,
+  REMOVE_EXPENCES,
 } from '../actions/actionTypes';
 
 const initialState = {
@@ -31,20 +30,15 @@ const wallet = (state = initialState, action) => {
       ...state,
       expenses: [...state.expenses, action.payload],
     };
-  case SUBMIT_EXCHANGES:
+  case REMOVE_EXPENCES:
     return {
       ...state,
-      exchange: action.payload,
+      expenses: state.expenses.filter((e) => e.id !== action.id),
     };
   case RAISE_ID:
     return {
       ...state,
       id: state.id + 1,
-    };
-  case REDUCE_ID:
-    return {
-      ...state,
-      id: state.id - 1,
     };
   default:
     return state;

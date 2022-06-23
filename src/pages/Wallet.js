@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchAPI, saveExpenses, saveId } from '../actions';
+import { fetchAPI, saveExpenses, saveId, removeExpense } from '../actions';
 import {
   REQUEST_API,
-  SUBMIT_EXCHANGES,
   RAISE_ID,
 } from '../actions/actionTypes';
 
@@ -22,7 +21,6 @@ class Wallet extends React.Component {
   componentDidMount() {
     const { currency } = this.props;
     currency();
-    // exchange();
   }
 
   handleChange = ({ target }) => {
@@ -32,11 +30,8 @@ class Wallet extends React.Component {
 
   exportState = async () => {
     const { waste, setID, id } = this.props;
-    // const exchangeRates = await fetch('https://economia.awesomeapi.com.br/json/all').then((results) => results.json());
-    // this.setState({ exchangeRates });
     const exported = {
       ...this.state,
-      // exchangeRates,
       id,
     };
     waste(exported);
@@ -51,7 +46,7 @@ class Wallet extends React.Component {
   };
 
   render() {
-    const { log, currencies, expenses } = this.props;
+    const { log, currencies, expenses, removeExpenses } = this.props;
     const { description, method, value, tag, currency } = this.state;
     return (
       <div>
@@ -147,10 +142,10 @@ class Wallet extends React.Component {
                   value: val,
                   exchangeRates,
                   currency: cur,
+                  id,
                 },
-                index,
               ) => (
-                <tr key={ index }>
+                <tr key={ id }>
                   <td>{desc}</td>
                   <td>{tg}</td>
                   <td>{meth}</td>
@@ -159,7 +154,16 @@ class Wallet extends React.Component {
                   <td>{Number(exchangeRates[cur].ask).toFixed(2)}</td>
                   <td>{(exchangeRates[cur].ask * val).toFixed(2)}</td>
                   <td>Real</td>
-                  <td>xd</td>
+                  <td>
+                    <button type="button">Editar</button>
+                    <button
+                      data-testid="delete-btn"
+                      type="button"
+                      onClick={ () => removeExpenses(id) }
+                    >
+                      Excluir
+                    </button>
+                  </td>
                 </tr>
               ),
             )}
@@ -175,11 +179,10 @@ Wallet.propTypes = {
   currency: PropTypes.func.isRequired,
   currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
   waste: PropTypes.func.isRequired,
-  // exchange: PropTypes.func.isRequired,
-  // exchangeRates: PropTypes.objectOf.isRequired,
   setID: PropTypes.func.isRequired,
   id: PropTypes.number.isRequired,
-  expenses: PropTypes.arrayOf.isRequired,
+  expenses: PropTypes.arrayOf(PropTypes.objectOf).isRequired,
+  removeExpenses: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -193,8 +196,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   waste: (state) => dispatch(saveExpenses(state)),
   currency: () => dispatch(fetchAPI(REQUEST_API)),
-  exchange: () => dispatch(fetchAPI(SUBMIT_EXCHANGES)),
   setID: (type) => dispatch(saveId(type)),
+  removeExpenses: (param) => dispatch(removeExpense(param)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wallet);

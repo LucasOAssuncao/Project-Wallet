@@ -3,7 +3,7 @@ import {
   SUBMIT_WALLET_FORM,
   REQUEST_API,
   SUBMIT_EXPENCES,
-  SUBMIT_EXCHANGES,
+  REMOVE_EXPENCES,
 } from './actionTypes';
 
 const savePersonalForm = (personalProfile) => ({
@@ -39,9 +39,6 @@ function fetchAPI(type) {
     if (type === REQUEST_API) {
       dispatch(saveCurrency(Object.keys(data).filter((e) => e !== 'USDT')));
     }
-    // if (type === SUBMIT_EXCHANGES) {
-    //   dispatch(saveExchange(data));
-    // }
   };
 }
 
@@ -55,9 +52,12 @@ const saveExpenses = (expenses) => async (dispatch) => {
       exchangeRates,
     },
   });
-  // type: SUBMIT_EXPENCES,
-  // payload: expenses,
 };
+
+const removeExpense = (id) => ({
+  type: REMOVE_EXPENCES,
+  id,
+});
 
 export {
   savePersonalForm,
@@ -67,4 +67,5 @@ export {
   saveExpenses,
   saveExchange,
   saveId,
+  removeExpense,
 };
