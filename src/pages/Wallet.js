@@ -138,19 +138,31 @@ class Wallet extends React.Component {
               <th>Moeda de conversão</th>
               <th>Editar/Excluir</th>
             </tr>
-            {expenses.map((e, index) => (
-              <tr key={ index }>
-                <td>{ e.description }</td>
-                <td>{ e.tag }</td>
-                <td>{ e.method }</td>
-                <td>{ e.value }</td>
-                <td>{ e.exchangeRates[currency].name.split('/')[0] }</td>
-                <td>{ e.exchangeRates[currency].ask }</td>
-                <td>{ (e.exchangeRates[currency].ask * e.value).toFixed(2) }</td>
-                <td>Real</td>
-                <td>xd</td>
-              </tr>
-            ))}
+            {expenses.map(
+              (
+                {
+                  description: desc,
+                  tag: tg,
+                  method: meth,
+                  value: val,
+                  exchangeRates,
+                  currency: cur,
+                },
+                index,
+              ) => (
+                <tr key={ index }>
+                  <td>{desc}</td>
+                  <td>{tg}</td>
+                  <td>{meth}</td>
+                  <td>{Number(val).toFixed(2)}</td>
+                  <td>{exchangeRates[cur].name.split('/')[0]}</td>
+                  <td>{Number(exchangeRates[cur].ask).toFixed(2)}</td>
+                  <td>{(exchangeRates[cur].ask * val).toFixed(2)}</td>
+                  <td>Real</td>
+                  <td>xd</td>
+                </tr>
+              ),
+            )}
           </table>
         </div>
       </div>
