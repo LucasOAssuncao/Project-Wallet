@@ -125,6 +125,34 @@ class Wallet extends React.Component {
             Adicionar despesa
           </button>
         </form>
+        <div>
+          <table>
+            <tr>
+              <th>Descrição</th>
+              <th>Tag</th>
+              <th>Método de pagamento</th>
+              <th>Valor</th>
+              <th>Moeda</th>
+              <th>Câmbio utilizado</th>
+              <th>Valor convertido</th>
+              <th>Moeda de conversão</th>
+              <th>Editar/Excluir</th>
+            </tr>
+            {expenses.map((e, index) => (
+              <tr key={ index }>
+                <td>{ e.description }</td>
+                <td>{ e.tag }</td>
+                <td>{ e.method }</td>
+                <td>{ e.value }</td>
+                <td>{ e.exchangeRates[currency].name.split('/')[0] }</td>
+                <td>{ e.exchangeRates[currency].ask }</td>
+                <td>{ (e.exchangeRates[currency].ask * e.value).toFixed(2) }</td>
+                <td>Real</td>
+                <td>xd</td>
+              </tr>
+            ))}
+          </table>
+        </div>
       </div>
     );
   }
@@ -145,7 +173,7 @@ Wallet.propTypes = {
 const mapStateToProps = (state) => ({
   log: state.user.email,
   currencies: state.wallet.currencies,
-  exchangeRates: state.wallet.exchange,
+  exchangeRates: state.wallet.expenses.exchangeRates,
   id: state.wallet.id,
   expenses: state.wallet.expenses,
 });
