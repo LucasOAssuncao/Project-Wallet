@@ -1,6 +1,14 @@
-import { SUBMIT_WALLET_FORM, REQUEST_API } from '../actions/actionTypes';
+import {
+  SUBMIT_WALLET_FORM,
+  REQUEST_API,
+  SUBMIT_EXPENCES,
+  SUBMIT_EXCHANGES,
+  RAISE_ID,
+  REDUCE_ID,
+} from '../actions/actionTypes';
 
 const initialState = {
+  id: 0,
   currencies: [], // array de string
   expenses: [], // array de objetos, com cada objeto tendo as chaves id, value, currency, method, tag, description e exchangeRates
   editor: false, // valor booleano que indica de uma despesa está sendo editada
@@ -17,6 +25,26 @@ const wallet = (state = initialState, action) => {
     return {
       ...state,
       currencies: action.payload,
+    };
+  case SUBMIT_EXPENCES:
+    return {
+      ...state,
+      expenses: [...state.expenses, action.payload],
+    };
+  case SUBMIT_EXCHANGES:
+    return {
+      ...state,
+      exchange: action.payload,
+    };
+  case RAISE_ID:
+    return {
+      ...state,
+      id: state.id + 1,
+    };
+  case REDUCE_ID:
+    return {
+      ...state,
+      id: state.id - 1,
     };
   default:
     return state;
