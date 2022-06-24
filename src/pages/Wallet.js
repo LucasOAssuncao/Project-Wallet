@@ -160,13 +160,15 @@ class Wallet extends React.Component {
                   <td>{(exchangeRates[cur].ask * val).toFixed(2)}</td>
                   <td>Real</td>
                   <td>
-                    <button type="button">Editar</button>
+                    <button type="button">
+                      <i className="ph-pencil-simple-line" />
+                    </button>
                     <button
                       data-testid="delete-btn"
                       type="button"
                       onClick={ () => removeExpenses(id) }
                     >
-                      Excluir
+                      <i className="ph-trash-simple" />
                     </button>
                   </td>
                 </tr>
