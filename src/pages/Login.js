@@ -37,9 +37,10 @@ class Login extends React.Component {
   render() {
     const { email, password, lockButton } = this.state;
     return (
-      <div>
-        <form>
+      <div className="form-login-father">
+        <form className="form-login">
           <input
+            className="Input-text"
             name="email"
             type="email"
             data-testid="email-input"
@@ -48,6 +49,7 @@ class Login extends React.Component {
             value={ email }
           />
           <input
+            className="Input-text"
             name="password"
             type="password"
             data-testid="password-input"
@@ -56,6 +58,7 @@ class Login extends React.Component {
             value={ password }
           />
           <button
+            className="button-85"
             type="button"
             disabled={ lockButton }
             onClick={ this.handleSubmit }
