@@ -49,8 +49,8 @@ class Wallet extends React.Component {
     const { log, currencies, expenses, removeExpenses } = this.props;
     const { description, method, value, tag, currency } = this.state;
     return (
-      <div>
-        <header>
+      <div className="wallet-father">
+        <header className="wallet-header">
           <h3 data-testid="email-field">{log}</h3>
           <h3 data-testid="header-currency-field">BRL</h3>
           <p data-testid="total-field">
@@ -64,8 +64,9 @@ class Wallet extends React.Component {
                 .toFixed([2])}
           </p>
         </header>
-        <form>
+        <form className="wallet-form">
           <input
+            className="Input-text-wallet"
             name="value"
             value={ value }
             data-testid="value-input"
@@ -74,6 +75,7 @@ class Wallet extends React.Component {
             onChange={ this.handleChange }
           />
           <input
+            className="Input-text-wallet"
             name="description"
             value={ description }
             data-testid="description-input"
@@ -84,6 +86,7 @@ class Wallet extends React.Component {
           <label htmlFor="moeda">
             Moeda
             <select
+              className="Input-text-wallet"
               name="currency"
               value={ currency }
               id="moeda"
@@ -95,6 +98,7 @@ class Wallet extends React.Component {
             </select>
           </label>
           <select
+            className="Input-text-wallet"
             name="method"
             value={ method }
             data-testid="method-input"
@@ -105,6 +109,7 @@ class Wallet extends React.Component {
             <option>Cartão de débito</option>
           </select>
           <select
+            className="Input-text-wallet"
             name="tag"
             value={ tag }
             data-testid="tag-input"
@@ -116,13 +121,13 @@ class Wallet extends React.Component {
             <option>Transporte</option>
             <option>Saúde</option>
           </select>
-          <button onClick={ this.exportState } type="button">
+          <button onClick={ this.exportState } type="button" className="button-30">
             Adicionar despesa
           </button>
         </form>
-        <div>
+        <div className="table-father">
           <table>
-            <tr>
+            <tr className="wallet-tr1">
               <th>Descrição</th>
               <th>Tag</th>
               <th>Método de pagamento</th>
@@ -145,7 +150,7 @@ class Wallet extends React.Component {
                   id,
                 },
               ) => (
-                <tr key={ id }>
+                <tr key={ id } className="wallet-tr2">
                   <td>{desc}</td>
                   <td>{tg}</td>
                   <td>{meth}</td>
