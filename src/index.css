@@ -235,12 +235,14 @@ code {
 
 .table-father{
   margin-top: 2%;
-  display: flex;
-  flex-direction: column;
   color: white;
   background: rgba(255, 255, 255, 0.161);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.451);
-  align-items: center;
+}
+
+table {
+  margin: auto;
+  width: 100%;
 }
