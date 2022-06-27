@@ -1,11 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchAPI, saveExpenses, saveId, removeExpense } from '../actions';
 import {
-  REQUEST_API,
-  RAISE_ID,
-} from '../actions/actionTypes';
+  fetchAPI,
+  saveExpenses,
+  saveId,
+  removeExpense,
+  editExpense,
+  updateExpense,
+} from '../actions';
+import { REQUEST_API, RAISE_ID } from '../actions/actionTypes';
 
 const alimentacao = 'Alimentação';
 
@@ -29,12 +33,17 @@ class Wallet extends React.Component {
   };
 
   exportState = async () => {
-    const { waste, setID, id } = this.props;
+    const { waste, setID, id, editor, updateExpenses, objToEdit } = this.props;
     const exported = {
       ...this.state,
       id,
     };
-    waste(exported);
+    if (editor) {
+      updateExpenses({ ...objToEdit, ...this.state });
+    } else {
+      waste(exported);
+      setID(RAISE_ID);
+    }
     this.setState({
       value: '',
       description: '',
@@ -42,11 +51,11 @@ class Wallet extends React.Component {
       method: 'Dinheiro',
       tag: alimentacao,
     });
-    setID(RAISE_ID);
   };
 
   render() {
-    const { log, currencies, expenses, removeExpenses } = this.props;
+    const { log,
+      currencies, expenses, removeExpenses, editExpenses, editor } = this.props;
     const { description, method, value, tag, currency } = this.state;
     return (
       <div className="wallet-father">
@@ -121,12 +130,16 @@ class Wallet extends React.Component {
             <option>Transporte</option>
             <option>Saúde</option>
           </select>
-          <button onClick={ this.exportState } type="button" className="button-30">
-            Adicionar despesa
+          <button
+            onClick={ this.exportState }
+            type="button"
+            className="button-30"
+          >
+            {editor ? 'Editar despesa' : 'Adicionar despesa'}
           </button>
         </form>
-        <div className="table-father">
-          <table>
+        <table className="table-father">
+          <thead>
             <tr className="wallet-tr1">
               <th>Descrição</th>
               <th>Tag</th>
@@ -138,18 +151,18 @@ class Wallet extends React.Component {
               <th>Moeda de conversão</th>
               <th>Editar/Excluir</th>
             </tr>
+          </thead>
+          <tbody>
             {expenses.map(
-              (
-                {
-                  description: desc,
-                  tag: tg,
-                  method: meth,
-                  value: val,
-                  exchangeRates,
-                  currency: cur,
-                  id,
-                },
-              ) => (
+              ({
+                description: desc,
+                tag: tg,
+                method: meth,
+                value: val,
+                exchangeRates,
+                currency: cur,
+                id,
+              }) => (
                 <tr key={ id } className="wallet-tr2">
                   <td>{desc}</td>
                   <td>{tg}</td>
@@ -160,7 +173,19 @@ class Wallet extends React.Component {
                   <td>{(exchangeRates[cur].ask * val).toFixed(2)}</td>
                   <td>Real</td>
                   <td>
-                    <button type="button">
+                    <button
+                      type="button"
+                      data-testid="edit-btn"
+                      onClick={ () => editExpenses(id, {
+                        description: desc,
+                        tag: tg,
+                        method: meth,
+                        value: val,
+                        exchangeRates,
+                        currency: cur,
+                        id,
+                      }) }
+                    >
                       <i className="ph-pencil-simple-line" />
                     </button>
                     <button
@@ -174,8 +199,8 @@ class Wallet extends React.Component {
                 </tr>
               ),
             )}
-          </table>
-        </div>
+          </tbody>
+        </table>
       </div>
     );
   }
@@ -190,6 +215,16 @@ Wallet.propTypes = {
   id: PropTypes.number.isRequired,
   expenses: PropTypes.arrayOf(PropTypes.objectOf).isRequired,
   removeExpenses: PropTypes.func.isRequired,
+  editExpenses: PropTypes.func.isRequired,
+  editor: PropTypes.bool.isRequired,
+  updateExpenses: PropTypes.func.isRequired,
+  objToEdit: PropTypes.shape({
+    description: PropTypes.string,
+    id: PropTypes.number,
+    tag: PropTypes.string,
+    method: PropTypes.string,
+    value: PropTypes.string,
+  }).isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -198,6 +233,8 @@ const mapStateToProps = (state) => ({
   exchangeRates: state.wallet.expenses.exchangeRates,
   id: state.wallet.id,
   expenses: state.wallet.expenses,
+  editor: state.wallet.editor,
+  objToEdit: state.wallet.objToEdit,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -205,6 +242,8 @@ const mapDispatchToProps = (dispatch) => ({
   currency: () => dispatch(fetchAPI(REQUEST_API)),
   setID: (type) => dispatch(saveId(type)),
   removeExpenses: (param) => dispatch(removeExpense(param)),
+  editExpenses: (p1, p2) => dispatch(editExpense(p1, p2)),
+  updateExpenses: (param) => dispatch(updateExpense(param)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wallet);

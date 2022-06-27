@@ -4,6 +4,8 @@ import {
   REQUEST_API,
   SUBMIT_EXPENCES,
   REMOVE_EXPENCES,
+  EDIT_EXPENCE,
+  UPDATE_EXPENCE,
 } from './actionTypes';
 
 const savePersonalForm = (personalProfile) => ({
@@ -59,6 +61,17 @@ const removeExpense = (id) => ({
   id,
 });
 
+const editExpense = (id, objToEdit) => ({
+  type: EDIT_EXPENCE,
+  id,
+  objToEdit,
+});
+
+const updateExpense = (objEdited) => ({
+  type: UPDATE_EXPENCE,
+  objEdited,
+});
+
 export {
   savePersonalForm,
   saveWalletForm,
@@ -68,4 +81,6 @@ export {
   saveExchange,
   saveId,
   removeExpense,
+  editExpense,
+  updateExpense,
 };
